@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="display: none;">
+  <!-- RF Logo Icon -->
+  <defs>
+    <linearGradient id="rfGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7df9ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff66c4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a8ff76;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- RF Logo -->
+  <symbol id="rf-logo" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="95" fill="none" stroke="url(#rfGradient)" stroke-width="2" opacity="0.3"/>
+    <circle cx="100" cy="100" r="85" fill="none" stroke="url(#rfGradient)" stroke-width="1" opacity="0.2"/>
+    
+    <!-- R -->
+    <text x="50" y="130" font-family="'Space Grotesk', sans-serif" font-size="80" font-weight="bold" fill="url(#rfGradient)" letter-spacing="-5">R</text>
+    <!-- F -->
+    <text x="115" y="130" font-family="'Space Grotesk', sans-serif" font-size="80" font-weight="bold" fill="url(#rfGradient)" letter-spacing="-5">F</text>
+    
+    <!-- Decorative corner elements -->
+    <line x1="20" y1="20" x2="40" y2="20" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    <line x1="20" y1="20" x2="20" y2="40" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    
+    <line x1="180" y1="20" x2="160" y2="20" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    <line x1="180" y1="20" x2="180" y2="40" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    
+    <line x1="20" y1="180" x2="40" y2="180" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    <line x1="20" y1="180" x2="20" y2="160" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    
+    <line x1="180" y1="180" x2="160" y2="180" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+    <line x1="180" y1="180" x2="180" y2="160" stroke="url(#rfGradient)" stroke-width="2" opacity="0.5"/>
+  </symbol>
+
+  <!-- Runes -->
+  <symbol id="rune-expertise" viewBox="0 0 64 64">
+    <!-- ᚱ - Raidho (Journey/Movement - represents expertise) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᚱ</text>
+  </symbol>
+
+  <symbol id="rune-transparent" viewBox="0 0 64 64">
+    <!-- ᛞ - Jera (Harvest/Reward - represents transparency) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᛞ</text>
+  </symbol>
+
+  <symbol id="rune-training" viewBox="0 0 64 64">
+    <!-- ᚦ - Thurisaz (Giant/Strength - represents training) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᚦ</text>
+  </symbol>
+
+  <symbol id="rune-future" viewBox="0 0 64 64">
+    <!-- ᚠ - Fehu (Wealth/Abundance - represents future-proof) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᚠ</text>
+  </symbol>
+
+  <symbol id="rune-lead" viewBox="0 0 64 64">
+    <!-- ᛏ - Tiwaz (Victory/Focus - represents lead system) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᛏ</text>
+  </symbol>
+
+  <symbol id="rune-content" viewBox="0 0 64 64">
+    <!-- ᚲ - Kenaz (Torch/Knowledge - represents content) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᚲ</text>
+  </symbol>
+
+  <symbol id="rune-full" viewBox="0 0 64 64">
+    <!-- ᛡ - Dagaz (Day/Breakthrough - represents full stack) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᛡ</text>
+  </symbol>
+
+  <symbol id="rune-support" viewBox="0 0 64 64">
+    <!-- ᛈ - Pertho (Mystery/Potential - represents support) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᛈ</text>
+  </symbol>
+
+  <symbol id="rune-delivery" viewBox="0 0 64 64">
+    <!-- ᚴ - Kauna (Opening/Opportunity - represents delivery) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᚴ</text>
+  </symbol>
+
+  <symbol id="rune-implementation" viewBox="0 0 64 64">
+    <!-- ᚳ - Cen (Journey - represents implementation) -->
+    <text x="32" y="50" font-family="serif" font-size="48" fill="currentColor" text-anchor="middle" dominant-baseline="middle">ᚳ</text>
+  </symbol>
+</svg>

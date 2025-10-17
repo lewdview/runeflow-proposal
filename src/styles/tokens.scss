@@ -1,0 +1,139 @@
+// ============================================================================
+// DESIGN TOKENS - RuneFlow 2025 Hyper-Modern UI System
+// ============================================================================
+
+:root {
+  // COLOR PALETTE
+  --surface-0: #0b0f14;        // Deep space background
+  --surface-1: #111722;        // Primary surface
+  --surface-2: #1a2332;        // Elevated surface
+  --surface-3: #242f3e;        // Tertiary surface
+  
+  --ink-0: #e8eef8;            // Primary text (highest contrast)
+  --ink-1: #b9c3d9;            // Secondary text
+  --ink-2: #7a87a0;            // Tertiary text
+  
+  --accent-1: #7df9ff;         // Luminous cyan
+  --accent-2: #ff66c4;         // Hyper fuchsia
+  --accent-3: #a8ff76;         // Neo lime
+  --accent-4: #ffb500;         // Warm gold (CTA accent)
+  
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-warm: rgba(125, 249, 255, 0.12);
+  --divider: rgba(255, 255, 255, 0.08);
+  
+  // SPACING SCALE (4px base)
+  --space-1: 0.25rem;          // 4px
+  --space-2: 0.5rem;           // 8px
+  --space-3: 0.75rem;          // 12px
+  --space-4: 1rem;             // 16px
+  --space-5: 1.25rem;          // 20px
+  --space-6: 1.5rem;           // 24px
+  --space-8: 2rem;             // 32px
+  --space-10: 2.5rem;          // 40px
+  --space-12: 3rem;            // 48px
+  --space-16: 4rem;            // 64px
+  --space-20: 5rem;            // 80px
+  --space-24: 6rem;            // 96px
+  
+  // BORDER RADIUS
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  
+  // SHADOWS - Glassmorphism & Elevation
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+  
+  // ELEVATION - Inset glass effect
+  --elev-1: 0 8px 32px rgba(0, 0, 0, 0.3), 
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --elev-2: 0 16px 48px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  
+  // BACKDROP BLUR
+  --blur-sm: blur(4px);
+  --blur-md: blur(12px);
+  --blur-lg: blur(24px);
+  
+  // TYPOGRAPHY
+  --font-family-display: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Monaco', monospace;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  // FONT SIZES
+  --font-xs: 0.75rem;          // 12px
+  --font-sm: 0.875rem;         // 14px
+  --font-base: 1rem;           // 16px
+  --font-lg: 1.125rem;         // 18px
+  --font-xl: 1.25rem;          // 20px
+  --font-2xl: 1.5rem;          // 24px
+  --font-3xl: 1.875rem;        // 30px
+  --font-4xl: 2.25rem;         // 36px
+  --font-5xl: 3rem;            // 48px
+  --font-6xl: 3.75rem;         // 60px
+  --font-7xl: 4.5rem;          // 72px
+  
+  // LINE HEIGHTS
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  // Z-INDEX LAYERS
+  --z-background: -1;
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-tooltip: 600;
+  
+  // ANIMATION DURATIONS & EASING
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slowest: 800ms;
+  
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);      // Spring-like
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94); // Smooth
+  
+  // TRANSITIONS
+  --transition-fast: all var(--duration-fast) var(--ease-in-out);
+  --transition-base: all var(--duration-base) var(--ease-in-out);
+  --transition-smooth: all var(--duration-slow) var(--ease-smooth);
+  
+  // GRADIENTS
+  --gradient-primary: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+  --gradient-warm: linear-gradient(135deg, var(--accent-4) 0%, var(--accent-2) 100%);
+  --gradient-cool: linear-gradient(135deg, var(--accent-1) 0%, #00d9ff 100%);
+  
+  // UTILITY
+  --contain-width: min(90vw, 1400px);
+  --contain-width-tight: min(90vw, 1200px);
+  
+  // Reduced motion
+  @media (prefers-reduced-motion: reduce) {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slowest: 0ms;
+    --blur-sm: blur(0);
+    --blur-md: blur(0);
+    --blur-lg: blur(0);
+  }
+}
