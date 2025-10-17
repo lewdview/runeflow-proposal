@@ -452,6 +452,23 @@ footer {
   z-index: var(--z-fixed);
 }
 
+// SCROLL REMINDER
+
+.scroll-reminder {
+  position: fixed;
+  bottom: var(--space-12);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-fixed);
+  animation: fadeOut 6s ease-in-out forwards;
+  animation-delay: 0.5s;
+  
+  @media (max-width: 768px) {
+    bottom: var(--space-8);
+    font-size: var(--font-sm);
+  }
+}
+
 // CURSOR FOLLOW
 
 .cursor-follow {

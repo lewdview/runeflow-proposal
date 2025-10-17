@@ -40,10 +40,24 @@ document.querySelectorAll('[data-reveal]').forEach((el) => {
 
 // Scroll progress bar
 const scrollProgress = document.querySelector('.scroll-progress');
+let hasScrolled = false;
 window.addEventListener('scroll', () => {
   const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
   const scrolled = (window.scrollY / scrollTotal) * 100;
   scrollProgress.style.width = scrolled + '%';
+  
+  // Dismiss scroll reminder on any scroll
+  if (!hasScrolled && window.scrollY > 50) {
+    hasScrolled = true;
+    const scrollReminder = document.getElementById('scrollReminder');
+    if (scrollReminder) {
+      gsap.to(scrollReminder, {
+        opacity: 0,
+        pointerEvents: 'none',
+        duration: 0.3,
+      });
+    }
+  }
 });
 
 // Cursor follow effect
