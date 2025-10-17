@@ -158,11 +158,11 @@ nav {
   line-height: 1.2;
   
   @media (max-width: 768px) {
-    font-size: var(--font-5xl);
+    font-size: var(--font-4xl);
   }
   
   @media (max-width: 640px) {
-    font-size: var(--font-4xl);
+    font-size: var(--font-3xl);
   }
 }
 
@@ -172,8 +172,12 @@ nav {
   margin-bottom: var(--space-8);
   line-height: 1.5;
   
+  @media (max-width: 768px) {
+    font-size: var(--font-base);
+  }
+  
   @media (max-width: 640px) {
-    font-size: var(--font-lg);
+    font-size: var(--font-sm);
   }
 }
 
@@ -293,6 +297,7 @@ section {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: var(--space-8);
+  font-size: var(--font-base);
   
   thead tr {
     border-bottom: 2px solid var(--border-subtle);
@@ -304,12 +309,14 @@ section {
     font-weight: var(--font-weight-semibold);
     color: var(--accent-1);
     background: rgba(125, 249, 255, 0.05);
+    font-size: var(--font-sm);
   }
   
   td {
     padding: var(--space-4) var(--space-6);
     border-bottom: 1px solid var(--border-subtle);
     color: var(--ink-1);
+    font-size: var(--font-sm);
   }
   
   tbody tr {
@@ -317,6 +324,28 @@ section {
     
     &:hover {
       background: rgba(125, 249, 255, 0.03);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-xs);
+    
+    th, td {
+      padding: var(--space-3) var(--space-3);
+      font-size: var(--font-xs);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    font-size: var(--font-xs);
+    
+    th, td {
+      padding: var(--space-2) var(--space-2);
+      font-size: var(--font-xs);
+    }
+    
+    th {
+      padding: var(--space-3) var(--space-2);
     }
   }
 }
@@ -634,5 +663,46 @@ section {
   .btn-primary,
   .btn-secondary {
     width: 100%;
+  }
+}
+
+// PRICING GRID RESPONSIVE
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  
+  @media (max-width: 640px) {
+    gap: var(--space-4);
+  }
+}
+
+// RESPONSIVE TEXT SIZING
+.section-header {
+  @media (max-width: 768px) {
+    margin-bottom: var(--space-12);
+    
+    h2 {
+      font-size: var(--font-4xl);
+    }
+    
+    p {
+      font-size: var(--font-base);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    h2 {
+      font-size: var(--font-3xl);
+    }
+    
+    p {
+      font-size: var(--font-sm);
+    }
   }
 }
