@@ -22,6 +22,16 @@ header {
   padding: var(--space-6) var(--space-8);
   max-width: var(--contain-width);
   margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    padding: var(--space-4) var(--space-6);
+    gap: var(--space-4);
+  }
+  
+  @media (max-width: 640px) {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+  }
 }
 
 .logo {
@@ -36,6 +46,15 @@ header {
   
   &:hover {
     color: var(--accent-4);
+  }
+  
+  @media (max-width: 768px) {
+    gap: var(--space-2);
+    font-size: var(--font-lg);
+  }
+  
+  @media (max-width: 640px) {
+    gap: var(--space-2);
   }
 }
 
@@ -663,6 +682,17 @@ section {
   .btn-primary,
   .btn-secondary {
     width: 100%;
+  }
+}
+
+// BUTTON VARIANTS
+.btn-small {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-sm);
+  
+  @media (max-width: 768px) {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-xs);
   }
 }
 
