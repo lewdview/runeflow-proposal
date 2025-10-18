@@ -462,10 +462,18 @@ footer {
   z-index: var(--z-fixed);
   animation: fadeOut 6s ease-in-out forwards;
   animation-delay: 0.5s;
+  pointer-events: none;
+  color: var(--accent-1);
   
   @media (max-width: 768px) {
-    bottom: var(--space-8);
+    bottom: var(--space-10);
     font-size: var(--font-sm);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  @media (max-width: 640px) {
+    bottom: var(--space-8);
   }
 }
 
