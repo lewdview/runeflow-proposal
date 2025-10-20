@@ -1,7 +1,7 @@
 {
   "name": "runeflow-redesigned",
   "version": "1.0.0",
-  "description": "",
+  "description": "A hyper-modern, high-performance redesign of the RuneFlow proposal landing page with cutting-edge animations, smooth scrolling, and interactive elements optimized for 2025-2027.",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -31,5 +31,14 @@
     "motion": "^12.23.24",
     "split-type": "^0.3.4",
     "three": "^0.180.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lewdview/runeflow-proposal.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lewdview/runeflow-proposal/issues"
+  },
+  "homepage": "https://github.com/lewdview/runeflow-proposal#readme"
 }

@@ -305,22 +305,96 @@ window.showContactModal = function() {
   modal.innerHTML = `
     <div class="modal-content">
       <button class="modal-close">×</button>
-      <h2>Let's Build Your Growth Engine</h2>
-      <div style="display: grid; gap: var(--space-6);">
+      <h2>Tell Us About Your Growth Goals</h2>
+      <p style="color: var(--ink-1); margin-bottom: var(--space-6); font-size: var(--font-sm);">We'll review your details and reach out within 24 hours with a tailored solution.</p>
+      <form id="growth-form" style="display: grid; gap: var(--space-5);">
         <div>
-          <h4><span style="font-size: 1.5rem; margin-right: 0.5rem;">ᚳ</span> Email</h4>
-          <a href="mailto:webhalla@proton.me">webhalla@proton.me</a>
-          <p style="color: var(--ink-2); font-size: var(--font-sm);">We respond within 24 hours.</p>
+          <label for="email" style="display: block; margin-bottom: var(--space-2); font-weight: 600; color: var(--accent-1);">Email *</label>
+          <input type="email" id="email" name="email" required placeholder="you@company.com" style="width: 100%; padding: var(--space-3); border: 1px solid rgba(125, 249, 255, 0.2); background: rgba(125, 249, 255, 0.02); border-radius: var(--radius-md); color: var(--ink-0); font-size: var(--font-base);" />
         </div>
+        
         <div>
-          <h4><span style="font-size: 1.5rem; margin-right: 0.5rem;">ᛏ</span> Phone</h4>
-          <a href="tel:+15204272131">+1 (520) 427-2131</a>
-          <p style="color: var(--ink-2); font-size: var(--font-sm);">Schedule a discovery call.</p>
+          <label for="company" style="display: block; margin-bottom: var(--space-2); font-weight: 600; color: var(--accent-1);">Company / Business Name *</label>
+          <input type="text" id="company" name="company" required placeholder="Your company" style="width: 100%; padding: var(--space-3); border: 1px solid rgba(125, 249, 255, 0.2); background: rgba(125, 249, 255, 0.02); border-radius: var(--radius-md); color: var(--ink-0); font-size: var(--font-base);" />
         </div>
+        
+        <div>
+          <label for="focus" style="display: block; margin-bottom: var(--space-2); font-weight: 600; color: var(--accent-1);">Primary Focus *</label>
+          <select id="focus" name="focus" required style="width: 100%; padding: var(--space-3); border: 1px solid rgba(125, 249, 255, 0.2); background: rgba(125, 249, 255, 0.02); border-radius: var(--radius-md); color: var(--ink-0); font-size: var(--font-base);">
+            <option value="">Select your primary focus</option>
+            <option value="Lead Generation (LSRS)">Lead Generation & Response (LSRS)</option>
+            <option value="Content Marketing (CMS)">Content Marketing System (CMS)</option>
+            <option value="Full Stack (FSGS)">Full Stack Growth System (FSGS)</option>
+            <option value="Custom Solution">Custom / Multiple Solutions</option>
+          </select>
+        </div>
+        
+        <div>
+          <label for="current-challenge" style="display: block; margin-bottom: var(--space-2); font-weight: 600; color: var(--accent-1);">Your Biggest Challenge *</label>
+          <textarea id="current-challenge" name="current-challenge" required placeholder="What's your biggest growth obstacle right now?" rows="4" style="width: 100%; padding: var(--space-3); border: 1px solid rgba(125, 249, 255, 0.2); background: rgba(125, 249, 255, 0.02); border-radius: var(--radius-md); color: var(--ink-0); font-size: var(--font-base); font-family: inherit; resize: vertical;"></textarea>
+        </div>
+        
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: var(--space-4);" id="submit-growth-form">Send My Details</button>
+        <p style="color: var(--ink-2); font-size: var(--font-xs); text-align: center; margin-top: var(--space-2);">We'll keep your information secure and respond promptly.</p>
+      </form>
+      <div id="form-status" style="display: none; text-align: center; padding: var(--space-6); background: rgba(168, 255, 118, 0.1); border-radius: var(--radius-md); border: 1px solid rgba(168, 255, 118, 0.3);">
+        <p style="color: var(--accent-2); font-weight: 600; margin: 0;">✓ Thanks! We'll be in touch within 24 hours.</p>
       </div>
     </div>
   `;
   document.body.appendChild(modal);
+  
+  // Handle form submission
+  const form = modal.querySelector('#growth-form');
+  const formStatus = modal.querySelector('#form-status');
+  const submitBtn = modal.querySelector('#submit-growth-form');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = modal.querySelector('#email').value;
+    const company = modal.querySelector('#company').value;
+    const focus = modal.querySelector('#focus').value;
+    const challenge = modal.querySelector('#current-challenge').value;
+    
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.5';
+    submitBtn.textContent = 'Sending...';
+    
+    try {
+      // Send to Formspree
+      const response = await fetch('https://formspree.io/f/xblzbwzp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          company,
+          focus,
+          challenge,
+          timestamp: new Date().toISOString()
+        })
+      });
+      
+      if (response.ok) {
+        form.style.display = 'none';
+        formStatus.style.display = 'block';
+        setTimeout(() => {
+          modal.classList.remove('active');
+          setTimeout(() => modal.remove(), 200);
+        }, 3000);
+      } else {
+        // Fallback: open email client
+        const subject = `Growth System Inquiry - ${company}`;
+        const body = `Email: ${email}\nCompany: ${company}\nPrimary Focus: ${focus}\nChallenge: ${challenge}`;
+        window.location.href = `mailto:webhalla@proton.me?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    } catch (error) {
+      // Fallback: open email client
+      const subject = `Growth System Inquiry - ${company}`;
+      const body = `Email: ${email}\nCompany: ${company}\nPrimary Focus: ${focus}\nChallenge: ${challenge}`;
+      window.location.href = `mailto:webhalla@proton.me?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+  });
   
   modal.querySelector('.modal-close').addEventListener('click', () => {
     modal.classList.remove('active');
