@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RuneFlow ROI Analysis</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
+  <style>
+    :root { --brand: #6f8cff; --baked: #00c389; --nonbaked: #ff6b6b; }
+    .reveal h1, .reveal h2, .reveal h3 { letter-spacing: 0.3px; }
+    .reveal section .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .reveal section .card { border: 1px solid #444; border-radius: 10px; padding: 14px 16px; background: rgba(255,255,255,0.03); }
+    .legend { display:flex; gap:16px; justify-content:center; margin:10px 0 0; font-size: 0.6em; opacity: 0.9; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display:inline-block; margin-right:6px; vertical-align: middle; }
+    table { width: 100%; font-size: 0.7em; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #444; padding: 8px 10px; text-align: left; }
+    th { background: rgba(255,255,255,0.05); }
+.small { font-size: .7em; opacity: .85; }
+    html, body { height: 100%; }
+    .reveal section { overflow-y: auto; }
+    .chart-wrap { max-height: 70vh; overflow: auto; }
+    .reveal canvas { display:block; width: 100% !important; height: 60vh !important; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>RuneFlow ROI Analysis</h1>
+        <h3>ROI Projections by Service Tier — Baked & Non-Baked</h3>
+        <p class="small">Includes LSRS, CMS, and FSGS tiers with projected payback windows and monthly savings.</p>
+      </section>
+
+      <section>
+        <h2>ROI (Weeks) by Tier</h2>
+        <div class="chart-wrap"><canvas id="roiWeeksChart"></canvas></div>
+        <div class="legend">
+          <span><span class="dot" style="background:var(--nonbaked)"></span>Non-Baked</span>
+          <span><span class="dot" style="background:var(--baked)"></span>Baked</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Monthly Savings by Tier ($/mo)</h2>
+        <div class="chart-wrap"><canvas id="monthlySavingsChart"></canvas></div>
+        <div class="legend">
+          <span><span class="dot" style="background:var(--nonbaked)"></span>Non-Baked</span>
+          <span><span class="dot" style="background:var(--baked)"></span>Baked</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>ROI Overview per Service Tier</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Lead Scaling & Response System (LSRS)</h3>
+            <ul>
+              <li>Non-Baked: ROI ≈ 5 weeks</li>
+              <li>Baked: ROI ≈ 6 weeks</li>
+              <li class="small">Avg savings: $1,200 (NB), $1,500 (B)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Content Marketing System (CMS)</h3>
+            <ul>
+              <li>Non-Baked: ROI ≈ 7 weeks</li>
+              <li>Baked: ROI ≈ 8 weeks</li>
+              <li class="small">Avg savings: $1,400 (NB), $1,800 (B)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Full Stack Growth System (FSGS)</h3>
+            <ul>
+              <li>Non-Baked: ROI ≈ 6 weeks</li>
+              <li>Baked: ROI ≈ 7 weeks</li>
+              <li class="small">Avg savings: $2,400 (NB), $3,000 (B)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>ROI Comparison Table</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>System Type</th>
+              <th>Setup + Monthly</th>
+              <th>ROI (Weeks)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>LSRS Non-Baked</td><td>$1,800</td><td>5</td></tr>
+            <tr><td>LSRS Baked</td><td>$3,200 + $450/mo</td><td>6</td></tr>
+            <tr><td>CMS Non-Baked</td><td>$1,800</td><td>7</td></tr>
+            <tr><td>CMS Baked</td><td>$3,500 + $500/mo</td><td>8</td></tr>
+            <tr><td>FSGS Non-Baked</td><td>$2,800</td><td>6</td></tr>
+            <tr><td>FSGS Baked</td><td>$5,500 + $800/mo</td><td>7</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Payback Week by System Variant</h2>
+        <div class="chart-wrap"><canvas id="paybackWeeksChart"></canvas></div>
+        <div class="legend">
+          <span><span class="dot" style="background:#ff6b6b"></span>Non-Baked</span>
+          <span><span class="dot" style="background:#00c389"></span>Baked</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>Non-baked models generally reach ROI ~1 week sooner than baked counterparts.</li>
+          <li>Baked models deliver higher ongoing monthly savings via automation and uptime.</li>
+          <li>FSGS offers the largest monthly savings; LSRS provides the fastest payback.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, plugins: [ RevealNotes ] });
+
+    const tiers = ['LSRS', 'CMS', 'FSGS'];
+
+    // ROI weeks data
+    const roiNonBaked = [5, 7, 6];
+    const roiBaked = [6, 8, 7];
+
+    // Monthly savings data
+    const savingsNonBaked = [1200, 1400, 2400];
+    const savingsBaked = [1500, 1800, 3000];
+
+    const commonOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#ddd' } },
+        y: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#ddd' }, beginAtZero: true }
+      },
+      plugins: {
+        legend: { labels: { color: '#ddd' } },
+        tooltip: { mode: 'index', intersect: false }
+      }
+    };
+
+    // ROI weeks chart
+    const roiWeeksCtx = document.getElementById('roiWeeksChart');
+    new Chart(roiWeeksCtx, {
+      type: 'bar',
+      data: {
+        labels: tiers,
+        datasets: [
+          { label: 'Non-Baked', data: roiNonBaked, backgroundColor: '#ff6b6b' },
+          { label: 'Baked', data: roiBaked, backgroundColor: '#00c389' }
+        ]
+      },
+      options: { ...commonOptions, aspectRatio: 2 }
+    });
+
+    // Monthly savings chart
+    const savingsCtx = document.getElementById('monthlySavingsChart');
+    new Chart(savingsCtx, {
+      type: 'bar',
+      data: {
+        labels: tiers,
+        datasets: [
+          { label: 'Non-Baked', data: savingsNonBaked, backgroundColor: '#ff6b6b' },
+          { label: 'Baked', data: savingsBaked, backgroundColor: '#00c389' }
+        ]
+      },
+      options: { ...commonOptions, aspectRatio: 2 }
+    });
+
+    // Payback week by system variant (single series)
+    const paybackLabels = [
+      'LSRS (Non-Baked)', 'LSRS (Baked)',
+      'CMS (Non-Baked)',  'CMS (Baked)',
+      'FSGS (Non-Baked)', 'FSGS (Baked)'
+    ];
+    const paybackWeeks = [5, 6, 7, 8, 6, 7];
+    const paybackColors = paybackLabels.map(lbl => lbl.includes('Non-Baked') ? '#ff6b6b' : '#00c389');
+
+    const paybackCtx = document.getElementById('paybackWeeksChart');
+    new Chart(paybackCtx, {
+      type: 'bar',
+      data: {
+        labels: paybackLabels,
+        datasets: [{
+          label: 'Payback Week',
+          data: paybackWeeks,
+          backgroundColor: paybackColors,
+        }]
+      },
+      options: {
+        ...commonOptions,
+        aspectRatio: 2,
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#ddd', maxRotation: 0, minRotation: 0, autoSkip: false, font: { size: 12 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#ddd' }, beginAtZero: true, title: { display: true, text: 'Weeks', color: '#ddd' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

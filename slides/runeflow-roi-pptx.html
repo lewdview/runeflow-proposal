@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Export RuneFlow ROI to Google Slides (PPTX)</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 24px; }
+    button { padding: 10px 14px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; cursor: pointer; }
+    .ok { color: #0a0; }
+  </style>
+</head>
+<body>
+  <h1>Export RuneFlow ROI deck to PPTX</h1>
+  <p>This will generate a .pptx you can upload to Google Slides.</p>
+  <button id="btn" disabled>Download PPTX</button>
+  <p id="status"></p>
+
+  <script src="./lib/pptxgen.min.js"></script>
+  <script>
+    function enableWhenReady() {
+      const btn = document.getElementById('btn');
+      if (window.PptxGenJS) {
+        btn.disabled = false;
+        document.getElementById('status').textContent = 'Ready. Click Download PPTX.';
+      } else {
+        document.getElementById('status').textContent = 'PPTX library not loaded yet. Refresh this page after loading local lib.';
+      }
+    }
+    window.__pptxReady = enableWhenReady;
+    // Poll until script is present
+    const intv = setInterval(() => {
+      if (window.PptxGenJS) { clearInterval(intv); enableWhenReady(); }
+    }, 400);
+    setTimeout(() => clearInterval(intv), 8000);
+
+    async function buildPptx() {
+      if (!window.PptxGenJS) { document.getElementById('status').textContent = 'PPTX library not loaded yet.'; return; }
+      const pptx = new PptxGenJS();
+      pptx.author = 'RuneFlow';
+      pptx.company = 'RuneFlow';
+      pptx.title = 'RuneFlow ROI Analysis';
+      pptx.subject = 'ROI Projections by Service Tier — Baked & Non-Baked';
+
+      const brand = '6F8CFF', baked = '00C389', nonbaked = 'FF6B6B';
+
+      // Slide 1: Title
+      let s1 = pptx.addSlide();
+      s1.addText('RuneFlow ROI Analysis', { x:0.5, y:1.2, w:9.0, fontSize:36, bold:true });
+      s1.addText('ROI Projections by Service Tier — Baked & Non-Baked', { x:0.5, y:2.2, w:9.0, fontSize:18, color:'555555' });
+
+      // Common chart options
+      const chartOpts = (title) => ({
+        x:0.5, y:0.9, w:9.0, h:4.6,
+        title,
+        valAxisTitle: 'Value',
+        catAxisTitle: 'Category',
+        chartColors: [nonbaked, baked],
+        dataLabelFormatCode: '0',
+        showLegend: true,
+        legendPos: 'b',
+      });
+
+      const cats = ['LSRS','CMS','FSGS'];
+
+      // Slide 2: ROI weeks by tier
+      let s2 = pptx.addSlide();
+      s2.addText('ROI (Weeks) by Tier', { x:0.5, y:0.3, w:9.0, fontSize:24, bold:true });
+      s2.addChart(pptx.ChartType.bar, [
+        { name:'Non-Baked', labels: cats, values: [5,7,6] },
+        { name:'Baked',     labels: cats, values: [6,8,7] }
+      ], chartOpts(''));
+
+      // Slide 3: Monthly savings
+      let s3 = pptx.addSlide();
+      s3.addText('Monthly Savings by Tier ($/mo)', { x:0.5, y:0.3, w:9.0, fontSize:24, bold:true });
+      s3.addChart(pptx.ChartType.bar, [
+        { name:'Non-Baked', labels: cats, values: [1200,1400,2400] },
+        { name:'Baked',     labels: cats, values: [1500,1800,3000] }
+      ], { ...chartOpts(''), valAxisTitle: '$ per Month' });
+
+      // Slide 4: Payback week by system variant
+      let s4 = pptx.addSlide();
+      s4.addText('Payback Week by System Variant', { x:0.5, y:0.3, w:9.0, fontSize:24, bold:true });
+      // Represent as two series over same categories
+      s4.addChart(pptx.ChartType.bar, [
+        { name:'Non-Baked', labels: cats, values: [5,7,6] },
+        { name:'Baked',     labels: cats, values: [6,8,7] }
+      ], { ...chartOpts(''), valAxisTitle: 'Weeks' });
+
+      // Slide 5: ROI comparison table
+      let s5 = pptx.addSlide();
+      s5.addText('ROI Comparison Table', { x:0.5, y:0.3, w:9.0, fontSize:24, bold:true });
+      const rows = [
+        ['System Type', 'Setup + Monthly', 'ROI (Weeks)'],
+        ['LSRS Non-Baked', '$1,800', '5'],
+        ['LSRS Baked', '$3,200 + $450/mo', '6'],
+        ['CMS Non-Baked', '$1,800', '7'],
+        ['CMS Baked', '$3,500 + $500/mo', '8'],
+        ['FSGS Non-Baked', '$2,800', '6'],
+        ['FSGS Baked', '$5,500 + $800/mo', '7'],
+      ];
+      s5.addTable(rows, {
+        x:0.5, y:1.0, w:9.0,
+        border: { type:'solid', color:'666666', pt:1 },
+        fill: 'FFFFFF',
+        fontSize: 14,
+        colW: [4.2, 2.8, 2.0],
+        rowH: 0.4,
+        header: true,
+      });
+
+      // Slide 6: Key takeaways
+      let s6 = pptx.addSlide();
+      s6.addText('Key Takeaways', { x:0.5, y:0.3, w:9.0, fontSize:24, bold:true });
+      s6.addText([
+        { text:'Non-baked models generally reach ROI ~1 week sooner than baked counterparts.\n', options:{ bullet:true, fontSize:18 } },
+        { text:'Baked models deliver higher ongoing monthly savings via automation and uptime.\n', options:{ bullet:true, fontSize:18 } },
+        { text:'FSGS offers the largest monthly savings; LSRS provides the fastest payback.', options:{ bullet:true, fontSize:18 } },
+      ], { x:0.7, y:1.0, w:8.6 });
+
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = 'Generating...';
+      try {
+        await pptx.writeFile({ fileName: 'runeflow-roi.pptx' });
+        statusEl.innerHTML = '<span class="ok">Downloaded runeflow-roi.pptx. Upload it to Google Slides.</span>';
+      } catch (e) {
+        console.error(e);
+        statusEl.textContent = 'Download blocked. Click the button again or try a different browser/tab (pop-up/download blocker).';
+      }
+    }
+
+    document.getElementById('btn').addEventListener('click', buildPptx);
+  </script>
+</body>
+</html>
