@@ -9,5 +9,6 @@ dist/
 .DS_Store
 .env
 .env.local
+env.local.js
 *.log
 .cache/

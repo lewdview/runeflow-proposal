@@ -295,6 +295,184 @@ window.showServiceModal = function(serviceName) {
   });
 };
 
+// ============================================================================
+// ONBOARDING GATE (Post-Payment Welcome)
+// ============================================================================
+
+window.showOnboardingModal = function() {
+  const onboardingModal = document.getElementById('onboardingModal');
+  if (!onboardingModal) return;
+  
+  // Show modal with animation
+  onboardingModal.style.display = 'flex';
+  onboardingModal.classList.add('active');
+  
+  // Set focus to modal for accessibility
+  onboardingModal.focus();
+  
+  // Handle close button
+  const closeBtn = onboardingModal.querySelector('.modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      onboardingModal.classList.remove('active');
+      setTimeout(() => {
+        onboardingModal.style.display = 'none';
+      }, 200);
+    });
+  }
+  
+  // Handle backdrop click
+  onboardingModal.addEventListener('click', (e) => {
+    if (e.target === onboardingModal) {
+      onboardingModal.classList.remove('active');
+      setTimeout(() => {
+        onboardingModal.style.display = 'none';
+      }, 200);
+    }
+  });
+  
+  // Handle Start Onboarding button
+  const startBtn = onboardingModal.querySelector('#startOnboardingBtn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      // Mark as seen in localStorage
+      localStorage.setItem('rf_onboarding_seen', 'true');
+      // Transition to step 1 (placeholder for now)
+      console.log('Onboarding started - transitioning to step 1');
+      // Future: Show checklist or requirements form here
+    });
+  }
+  
+  // Handle View Receipt button
+  const receiptBtn = onboardingModal.querySelector('#viewReceiptBtn');
+  if (receiptBtn) {
+    receiptBtn.addEventListener('click', () => {
+      // Placeholder for Stripe customer portal
+      console.log('Redirecting to receipt / customer portal');
+      // Future: Redirect to Stripe customer portal with session ID
+    });
+  }
+};
+
+window.initOnboardingGate = function() {
+  // Check URL for onboarding=1 query param
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('onboarding') === '1') {
+    const sessionId = params.get('session_id');
+    
+    // Mark as seen
+    localStorage.setItem('rf_onboarding_seen', 'true');
+    
+    if (sessionId) {
+      console.log('Onboarding gate triggered with session:', sessionId);
+      // Optional: Fetch session data from backend to confirm purchase
+      // For MVP, just show the modal
+    }
+    
+    // Show onboarding modal after a brief delay for UX
+    setTimeout(() => {
+      window.showOnboardingModal();
+    }, 500);
+  }
+};
+
+// ============================================================================
+// STRIPE CHECKOUT
+// ============================================================================
+
+let stripe = null;
+
+function initStripe() {
+  // Wait for Stripe.js to load and ENV config to be available
+  if (!window.Stripe || !window.ENV) return;
+  
+  if (!stripe) {
+    stripe = window.Stripe(window.ENV.STRIPE_PUBLISHABLE_KEY);
+  }
+  return stripe;
+}
+
+window.initMVPCheckout = function() {
+  const mvpBtn = document.getElementById('mvpCheckoutBtn');
+  if (!mvpBtn) return;
+  
+  mvpBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    // Initialize Stripe if needed
+    const stripeInstance = initStripe();
+    if (!stripeInstance) {
+      console.error('Stripe not initialized');
+      return;
+    }
+    
+    if (!window.ENV || !window.ENV.MVP_PRICE_ID) {
+      console.error('MVP_PRICE_ID not configured in environment');
+      // Fallback to contact modal
+      window.showContactModal();
+      return;
+    }
+    
+    // Show loading state
+    mvpBtn.disabled = true;
+    mvpBtn.style.opacity = '0.6';
+    const originalText = mvpBtn.textContent;
+    mvpBtn.textContent = 'Redirecting to Stripe...';
+    
+    try {
+      const result = await stripe.redirectToCheckout({
+        lineItems: [{ price: window.ENV.MVP_PRICE_ID, quantity: 1 }],
+        mode: 'payment',
+        successUrl: `${window.location.origin}/?onboarding=1&session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${window.location.origin}/#pricing`,
+      });
+      
+      if (result.error) {
+        // Re-enable button on error
+        mvpBtn.disabled = false;
+        mvpBtn.style.opacity = '1';
+        mvpBtn.textContent = originalText;
+        
+        // Show error toast
+        const errorMsg = result.error.message || 'Unable to process checkout';
+        console.error('Stripe error:', errorMsg);
+        
+        // Simple error notification
+        const errorEl = document.createElement('div');
+        errorEl.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(255, 102, 196, 0.1);
+          border: 1px solid rgba(255, 102, 196, 0.3);
+          border-radius: 8px;
+          padding: 16px;
+          color: var(--ink-1);
+          font-size: 14px;
+          max-width: 300px;
+          z-index: 10000;
+          animation: slideUp 0.4s ease-out;
+        `;
+        errorEl.textContent = errorMsg;
+        document.body.appendChild(errorEl);
+        
+        setTimeout(() => {
+          gsap.to(errorEl, {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => errorEl.remove(),
+          });
+        }, 4000);
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      mvpBtn.disabled = false;
+      mvpBtn.style.opacity = '1';
+      mvpBtn.textContent = originalText;
+    }
+  });
+};
+
 window.showContactModal = function() {
   let modal = document.getElementById('contact-modal');
   if (modal) modal.remove();
@@ -410,6 +588,9 @@ window.showContactModal = function() {
 
 // Attach listeners on DOM ready
 function initializeModals() {
+  // Initialize MVP checkout
+  window.initMVPCheckout();
+  
   document.querySelectorAll('button').forEach(btn => {
     const text = btn.textContent.trim();
     
@@ -445,10 +626,15 @@ function initializeModals() {
   });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeModals);
-} else {
+function initializeApp() {
   initializeModals();
+  window.initOnboardingGate();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
 }
 
 // Prevent cursor circle from interfering

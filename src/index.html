@@ -19,6 +19,9 @@
   <!-- Styles -->
   <link rel="stylesheet" href="./styles/main.scss">
   
+  <!-- Stripe.js -->
+  <script defer src="https://js.stripe.com/v3/"></script>
+  
   <title>RuneFlow - Proposal & Pricing | Primitive Success Group's Solar Automation</title>
 </head>
 <body>
@@ -405,7 +408,12 @@
             </div>
           </div>
           
-          <button class="btn-secondary" style="width: 100%; margin-top: var(--space-6); cursor: pointer;" onclick="window.showContactModal()">Start MVP</button>
+          <div style="display: grid; gap: var(--space-4);">
+            <button id="mvpCheckoutBtn" class="btn-primary" style="width: 100%; margin-top: var(--space-6); cursor: pointer;">Checkout with Stripe</button>
+            <p style="margin: 0; color: var(--ink-2); font-size: var(--font-xs); text-align: center;">Secure payment processed by Stripe</p>
+          </div>
+          
+          <button class="btn-secondary" style="width: 100%; margin-top: var(--space-4); cursor: pointer;" onclick="window.showContactModal()">Prefer to discuss first?</button>
         </div>
         
         <div style="display: grid; gap: var(--space-8);">
@@ -488,7 +496,9 @@
         <!-- Payment Terms -->
         <div class="glass" style="margin-top: var(--space-16); padding: var(--space-8); background: rgba(168, 255, 118, 0.05); border: 1px solid rgba(168, 255, 118, 0.2);">
           <div style="display: flex; align-items: center; gap: var(--space-6);">
-            <div style="font-size: var(--font-4xl);">💰</div>
+            <svg class="rune-icon rune-icon--accent" aria-hidden="true">
+              <use href="#icon-payment-rune" />
+            </svg>
             <div>
               <h4 style="margin-bottom: var(--space-2); color: var(--accent-3);">Payment Terms</h4>
               <p style="margin: 0; color: var(--ink-1); font-size: var(--font-base);"><strong>50% upfront</strong> to begin work + integrations. <strong>50% on completion</strong> at launch.</p>
@@ -611,6 +621,43 @@
     </section>
   </main>
 
+  <!-- Onboarding Welcome Modal (shown after successful Stripe payment) -->
+  <div id="onboardingModal" style="display: none;" class="modal-overlay" aria-modal="true" role="dialog" aria-labelledby="onboarding-title">
+    <div class="modal-content" style="max-width: 650px;">
+      <button class="modal-close" aria-label="Close onboarding modal">×</button>
+      
+      <!-- Welcome Header with Rune Icon -->
+      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-8);">
+        <svg class="rune-icon rune-icon--payment" style="width: 2rem; height: 2rem; margin-right: var(--space-3);" aria-hidden="true">
+          <use href="#icon-payment-rune" />
+        </svg>
+        <h2 id="onboarding-title" style="margin: 0; font-size: var(--font-3xl);">Welcome to RuneFlow</h2>
+      </div>
+      
+      <p style="margin-bottom: var(--space-6); color: var(--ink-1); text-align: center; font-size: var(--font-base);">Your MVP automation journey begins now.</p>
+      
+      <!-- What Happens Next -->
+      <div style="padding: var(--space-6); background: rgba(125, 249, 255, 0.05); border-radius: var(--radius-md); border: 1px solid rgba(125, 249, 255, 0.2); margin-bottom: var(--space-8);">
+        <h3 style="color: var(--accent-1); margin-top: 0; margin-bottom: var(--space-4); font-size: var(--font-lg);">What Happens Next</h3>
+        <ol style="list-style: decimal; margin-left: var(--space-6); padding: 0; color: var(--ink-1);">
+          <li style="margin-bottom: var(--space-3);"><strong>Today:</strong> You'll receive a welcome email with project details and a Notion workspace invite</li>
+          <li style="margin-bottom: var(--space-3);"><strong>Days 1-3:</strong> Schedule your kickoff call with our automation architect</li>
+          <li style="margin-bottom: var(--space-3);"><strong>Week 1:</strong> Begin the 3-5 day MVP build with daily progress updates</li>
+          <li>Target launch: Ready to integrate within 5-7 business days</li>
+        </ol>
+      </div>
+      
+      <!-- Next Steps CTA -->
+      <div style="display: grid; gap: var(--space-4);">
+        <button id="startOnboardingBtn" class="btn-primary" style="width: 100%; cursor: pointer;">Start Onboarding Checklist</button>
+        <button id="viewReceiptBtn" class="btn-secondary" style="width: 100%; cursor: pointer;">View Payment Receipt</button>
+      </div>
+      
+      <!-- Support Info -->
+      <p style="margin-top: var(--space-6); margin-bottom: 0; color: var(--ink-2); font-size: var(--font-sm); text-align: center;">Questions? <a href="mailto:webhalla@proton.me" style="color: var(--accent-1); text-decoration: none;">Contact us</a></p>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer>
     <div class="container text-center">
@@ -620,6 +667,23 @@
       <p style="font-size: var(--font-xs); color: var(--ink-2); margin-top: var(--space-8);">© 2025 Webhalla. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- SVG Icon Symbols -->
+  <svg style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <!-- Rune Payment Icon: minimal angular glyph -->
+    <symbol id="icon-payment-rune" viewBox="0 0 24 24">
+      <!-- Vertical stave -->
+      <line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Top horizontal tick (left) -->
+      <line x1="8" y1="6" x2="16" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Bottom horizontal tick (right) -->
+      <line x1="8" y1="18" x2="16" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <!-- Environment Config (try local first, fallback to example) -->
+  <script src="./env.local.js"></script>
+  <script src="./env.example.js"></script>
 
   <!-- Scripts -->
   <script type="module" src="./main.js"></script>
